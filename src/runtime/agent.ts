@@ -1,5 +1,8 @@
 import { HttpAgent } from "@ag-ui/client";
 
-export const agent = new HttpAgent({
-  url: "/api/agent",
-});
+export function createAgent(gameId: string): HttpAgent {
+  return new HttpAgent({
+    url: "/api/agent",
+    initialState: { gameId },
+  });
+}
