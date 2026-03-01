@@ -125,6 +125,7 @@ export async function POST(req: Request) {
 
         emit({ type: EventType.RUN_FINISHED, threadId, runId });
       } catch (error) {
+        console.error("[agent] Error during streaming:", error);
         emit({
           type: EventType.RUN_ERROR,
           message:
