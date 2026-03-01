@@ -3,7 +3,7 @@ import { EventEncoder } from "@ag-ui/encoder";
 import { v4 as uuidv4 } from "uuid";
 import { streamClaudeResponse } from "@/lib/claude-client";
 import { loadRules, getGameName } from "@/lib/rules-loader";
-import { buildSystemPrompt } from "@/lib/prompts";
+import { buildSystemPrompt, RENDER_UI_TOOL } from "@/lib/prompts";
 import type Anthropic from "@anthropic-ai/sdk";
 
 interface AGUIMessage {
@@ -77,6 +77,7 @@ export async function POST(req: Request) {
         for await (const chunk of streamClaudeResponse(
           systemPrompt,
           claudeMessages,
+          [RENDER_UI_TOOL],
         )) {
           if (chunk.type === "text") {
             if (!textMessageStarted) {
