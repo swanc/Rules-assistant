@@ -12,6 +12,7 @@
     "@ag-ui/client": "^0.0.45",
     "@ag-ui/core": "^0.0.45",
     "@ag-ui/encoder": "^0.0.45",
+    "@anthropic-ai/sdk": "^0.78.0",
     "@assistant-ui/react": "^0.12.14",
     "@assistant-ui/react-ag-ui": "^0.0.18",
     "next": "16.1.6",
