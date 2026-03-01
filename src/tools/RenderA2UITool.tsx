@@ -38,10 +38,16 @@ export const RenderA2UITool = makeAssistantToolUI<RenderUIArgs, string>({
   render: ({ args, status }) => {
     if (status.type === "running") {
       return (
-        <div className="my-2 rounded-lg border border-zinc-200 dark:border-zinc-700 p-4">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
-            <span className="text-sm text-zinc-500 dark:text-zinc-400">
+        <div
+          className="my-3 rounded-xl p-4"
+          style={{ border: "1px solid var(--border)" }}
+        >
+          <div className="flex items-center gap-2.5">
+            <div
+              className="w-4 h-4 border-2 border-t-transparent rounded-full animate-spin"
+              style={{ borderColor: "var(--accent)", borderTopColor: "transparent" }}
+            />
+            <span className="text-sm" style={{ color: "var(--muted)" }}>
               Generating rich view...
             </span>
           </div>

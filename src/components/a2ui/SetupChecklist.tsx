@@ -31,29 +31,43 @@ export function SetupChecklist({ title, items }: SetupChecklistProps) {
   };
 
   return (
-    <div className="my-2 rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-hidden">
-      <div className="flex items-center justify-between bg-zinc-50 dark:bg-zinc-800 px-4 py-2 border-b border-zinc-200 dark:border-zinc-700">
+    <div
+      className="my-3 rounded-xl overflow-hidden shadow-sm"
+      style={{ border: "1px solid var(--border)" }}
+    >
+      <div
+        className="flex items-center justify-between px-4 py-2.5"
+        style={{
+          background: "var(--surface-secondary)",
+          borderBottom: "1px solid var(--border)",
+        }}
+      >
         <h3 className="text-sm font-semibold">{title}</h3>
-        <span className="text-xs text-zinc-500 dark:text-zinc-400">
+        <span className="text-xs font-medium" style={{ color: "var(--muted)" }}>
           {completedCount}/{totalCount}
         </span>
       </div>
-      <div className="px-4 py-3">
-        <ul className="space-y-2">
+      <div className="px-4 py-3" style={{ background: "var(--surface)" }}>
+        <ul className="space-y-2.5">
           {items.map((item, i) => (
             <li key={i} className="flex items-start gap-3">
               <button
                 type="button"
                 onClick={() => toggleItem(i)}
-                className={`flex-shrink-0 w-5 h-5 mt-0.5 rounded border-2 flex items-center justify-center transition-colors ${
-                  checkedState[i]
-                    ? "bg-blue-600 border-blue-600 text-white"
-                    : "border-zinc-300 dark:border-zinc-600"
-                }`}
+                className="flex-shrink-0 w-5 h-5 mt-0.5 rounded flex items-center justify-center transition-colors"
+                style={{
+                  background: checkedState[i]
+                    ? "var(--accent)"
+                    : "transparent",
+                  border: checkedState[i]
+                    ? "2px solid var(--accent)"
+                    : "2px solid var(--border)",
+                  cursor: "pointer",
+                }}
               >
                 {checkedState[i] && (
                   <svg
-                    className="w-3 h-3"
+                    className="w-3 h-3 text-white"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -68,11 +82,13 @@ export function SetupChecklist({ title, items }: SetupChecklistProps) {
                 )}
               </button>
               <span
-                className={`text-sm leading-relaxed ${
-                  checkedState[i]
-                    ? "line-through text-zinc-400 dark:text-zinc-500"
-                    : ""
-                }`}
+                className="text-sm leading-relaxed transition-colors"
+                style={{
+                  color: checkedState[i]
+                    ? "var(--muted-light)"
+                    : "var(--foreground)",
+                  textDecoration: checkedState[i] ? "line-through" : "none",
+                }}
               >
                 {item.text}
               </span>
@@ -81,7 +97,14 @@ export function SetupChecklist({ title, items }: SetupChecklistProps) {
         </ul>
       </div>
       {completedCount === totalCount && totalCount > 0 && (
-        <div className="bg-green-50 dark:bg-green-900/20 px-4 py-2 border-t border-zinc-200 dark:border-zinc-700 text-xs text-green-700 dark:text-green-300 font-medium">
+        <div
+          className="px-4 py-2.5 text-xs font-medium"
+          style={{
+            background: "var(--accent-bg)",
+            borderTop: "1px solid var(--border)",
+            color: "var(--accent)",
+          }}
+        >
           Setup complete!
         </div>
       )}

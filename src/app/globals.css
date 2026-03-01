@@ -1,8 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf9f7;
+  --foreground: #1c1917;
+  --surface: #ffffff;
+  --surface-secondary: #f5f3f0;
+  --border: #e7e2dd;
+  --border-subtle: #f0ece8;
+  --accent: #9f5e30;
+  --accent-light: #c4865a;
+  --accent-bg: #fdf4ec;
+  --accent-hover: #8a5029;
+  --muted: #78716c;
+  --muted-light: #a8a29e;
 }
 
 @theme inline {
@@ -12,8 +22,18 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #1a1614;
+    --foreground: #e7e0db;
+    --surface: #231f1c;
+    --surface-secondary: #2a2522;
+    --border: #3d3530;
+    --border-subtle: #302a26;
+    --accent: #d4915e;
+    --accent-light: #e0a87a;
+    --accent-bg: #2e2219;
+    --accent-hover: #e0a87a;
+    --muted: #a8a29e;
+    --muted-light: #78716c;
   }
 }
 
@@ -21,6 +41,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family:
+    "Inter",
     system-ui,
     -apple-system,
     BlinkMacSystemFont,
@@ -28,3 +49,37 @@ body {
     Roboto,
     sans-serif;
 }
+
+/* Smooth scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-light);
+}
+
+/* Typing indicator animation */
+@keyframes typing-dot {
+  0%, 60%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+.typing-dot:nth-child(1) { animation: typing-dot 1.4s infinite 0s; }
+.typing-dot:nth-child(2) { animation: typing-dot 1.4s infinite 0.2s; }
+.typing-dot:nth-child(3) { animation: typing-dot 1.4s infinite 0.4s; }

@@ -14,20 +14,39 @@ interface QuickReferenceProps {
 
 export function QuickReference({ title, items }: QuickReferenceProps) {
   return (
-    <div className="my-2 rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-hidden">
-      <div className="bg-zinc-50 dark:bg-zinc-800 px-4 py-2 border-b border-zinc-200 dark:border-zinc-700">
+    <div
+      className="my-3 rounded-xl overflow-hidden shadow-sm"
+      style={{ border: "1px solid var(--border)" }}
+    >
+      <div
+        className="px-4 py-2.5"
+        style={{
+          background: "var(--surface-secondary)",
+          borderBottom: "1px solid var(--border)",
+        }}
+      >
         <h3 className="text-sm font-semibold">{title}</h3>
       </div>
-      <div className="px-4 py-3">
-        <dl className="space-y-1.5">
+      <div className="px-4 py-3" style={{ background: "var(--surface)" }}>
+        <dl className="space-y-2">
           {items.map((item, i) => (
-            <div key={i} className="flex gap-2 text-sm">
-              <dt className="font-medium text-zinc-600 dark:text-zinc-300 min-w-[100px]">
+            <div
+              key={i}
+              className="flex gap-2 text-sm py-1"
+              style={{
+                borderBottom:
+                  i < items.length - 1
+                    ? "1px solid var(--border-subtle)"
+                    : "none",
+              }}
+            >
+              <dt
+                className="font-medium min-w-[120px] flex-shrink-0"
+                style={{ color: "var(--accent)" }}
+              >
                 {item.label}
               </dt>
-              <dd className="text-zinc-800 dark:text-zinc-200">
-                {item.value}
-              </dd>
+              <dd>{item.value}</dd>
             </div>
           ))}
         </dl>
