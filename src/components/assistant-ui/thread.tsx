@@ -6,13 +6,20 @@ import {
   ComposerPrimitive,
   useThreadRuntime,
 } from "@assistant-ui/react";
+// This import gives us a component that converts markdown text (like **bold**
+// and ## headings) into real HTML elements, so they display properly
+import { MarkdownTextPrimitive } from "@assistant-ui/react-markdown";
+import remarkGfm from "remark-gfm";
+import { GAMES_BY_ID } from "@/lib/games";
 
-const SUGGESTIONS = [
-  { text: "How does combat work?", icon: "\u2694\uFE0F" },
-  { text: "Compare the factions", icon: "\u{1F3AD}" },
-  { text: "Walk me through setup", icon: "\u{1F4CB}" },
-  { text: "What happens on a turn?", icon: "\u{1F504}" },
-];
+/**
+ * Custom text renderer that converts markdown into styled HTML.
+ * Without this, assistant messages show raw markdown symbols like ** and ##.
+ * We pass remarkGfm so tables and strikethrough also work.
+ */
+const MarkdownText = () => (
+  <MarkdownTextPrimitive remarkPlugins={[remarkGfm]} />
+);
 
 function SuggestionChip({
   text,
@@ -26,7 +33,7 @@ function SuggestionChip({
   return (
     <button
       type="button"
-      className="flex items-center gap-2 px-4 py-2.5 text-sm rounded-xl transition-all duration-200"
+      className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm rounded-xl transition-all duration-200"
       style={{
         background: "var(--surface)",
         border: "1px solid var(--border)",
@@ -48,7 +55,7 @@ function SuggestionChip({
         });
       }}
     >
-      <span role="img" className="text-base">
+      <span role="img" className="text-sm">
         {icon}
       </span>
       {text}
@@ -58,41 +65,88 @@ function SuggestionChip({
 
 function TypingIndicator() {
   return (
-    <div className="flex justify-start px-4 py-2">
-      <div
-        className="flex items-center gap-1 rounded-2xl px-4 py-3"
-        style={{ background: "var(--surface-secondary)" }}
-      >
-        <span
-          className="typing-dot w-2 h-2 rounded-full"
-          style={{ background: "var(--muted)" }}
-        />
-        <span
-          className="typing-dot w-2 h-2 rounded-full"
-          style={{ background: "var(--muted)" }}
-        />
-        <span
-          className="typing-dot w-2 h-2 rounded-full"
-          style={{ background: "var(--muted)" }}
-        />
-      </div>
+    <div className="flex items-center gap-1 px-1 py-1">
+      <span
+        className="typing-dot w-1.5 h-1.5 rounded-full"
+        style={{ background: "var(--muted)" }}
+      />
+      <span
+        className="typing-dot w-1.5 h-1.5 rounded-full"
+        style={{ background: "var(--muted)" }}
+      />
+      <span
+        className="typing-dot w-1.5 h-1.5 rounded-full"
+        style={{ background: "var(--muted)" }}
+      />
     </div>
   );
 }
 
-export function Thread() {
+/**
+ * "New Topic" button — clears the chat so the user can ask about something
+ * different without old context bleeding in. Only shown when there are messages.
+ */
+function NewTopicButton({ onNewTopic }: { onNewTopic?: () => void }) {
+  const threadRuntime = useThreadRuntime();
+  const hasMessages = threadRuntime.getState().messages.length > 0;
+
+  if (!hasMessages) return null;
+
+  return (
+    <div
+      className="flex justify-end px-3 py-1.5"
+      style={{ borderBottom: "1px solid var(--border)" }}
+    >
+      <button
+        type="button"
+        onClick={onNewTopic}
+        className="flex items-center gap-1.5 px-2.5 py-1 text-[11px] rounded-lg transition-all duration-200"
+        style={{
+          color: "var(--muted)",
+          border: "1px solid var(--border)",
+          background: "transparent",
+          cursor: "pointer",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = "var(--accent)";
+          e.currentTarget.style.borderColor = "var(--accent)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = "var(--muted)";
+          e.currentTarget.style.borderColor = "var(--border)";
+        }}
+      >
+        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-6M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+        </svg>
+        New topic
+      </button>
+    </div>
+  );
+}
+
+export function Thread({ gameId, onNewTopic }: { gameId: string; onNewTopic?: () => void }) {
+  // Get game-specific suggestions from the shared config, with a fallback
+  const suggestions = GAMES_BY_ID[gameId]?.suggestions || [
+    { text: "How does combat work?", icon: "\u2694\uFE0F" },
+    { text: "Compare the factions", icon: "\u{1F3AD}" },
+  ];
+
   return (
     <ThreadPrimitive.Root className="flex flex-col h-full">
+      <NewTopicButton onNewTopic={onNewTopic} />
+
       <ThreadPrimitive.Viewport className="flex-1 overflow-y-auto">
         <div className="max-w-3xl mx-auto w-full">
+          {/* Empty state — shown before any messages are sent */}
           <ThreadPrimitive.Empty>
-            <div className="flex flex-col items-center justify-center h-full text-center px-6 py-16">
+            <div className="flex flex-col items-center justify-center h-full text-center px-4 py-10 sm:py-16">
               <div
-                className="w-16 h-16 mb-5 rounded-2xl flex items-center justify-center shadow-sm"
+                className="w-14 h-14 mb-4 rounded-2xl flex items-center justify-center shadow-sm"
                 style={{ background: "var(--accent)" }}
               >
                 <svg
-                  className="w-8 h-8 text-white"
+                  className="w-7 h-7 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -105,18 +159,17 @@ export function Thread() {
                   />
                 </svg>
               </div>
-              <h2 className="text-xl font-semibold mb-2 tracking-tight">
+              <h2 className="text-lg sm:text-xl font-semibold mb-1.5 tracking-tight">
                 What would you like to know?
               </h2>
               <p
-                className="max-w-md mb-8 text-sm leading-relaxed"
+                className="max-w-sm mb-6 text-xs sm:text-sm leading-relaxed"
                 style={{ color: "var(--muted)" }}
               >
-                I can explain rules, compare factions, walk through game
-                mechanics, and help you set up your next play.
+                Ask about rules, compare factions, or get help setting up your next game.
               </p>
-              <div className="flex flex-wrap gap-2.5 justify-center max-w-lg">
-                {SUGGESTIONS.map((s) => (
+              <div className="flex flex-wrap gap-2 justify-center max-w-md">
+                {suggestions.map((s) => (
                   <SuggestionChip key={s.text} text={s.text} icon={s.icon} />
                 ))}
               </div>
@@ -137,11 +190,12 @@ export function Thread() {
   );
 }
 
+/** User's message bubble — right-aligned with accent background */
 function UserMessage() {
   return (
-    <MessagePrimitive.Root className="flex justify-end px-4 py-2">
+    <MessagePrimitive.Root className="flex justify-end px-3 py-1.5">
       <div
-        className="max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed text-white shadow-sm"
+        className="max-w-[85%] rounded-2xl px-3.5 py-2 text-sm leading-relaxed text-white shadow-sm"
         style={{ background: "var(--accent)" }}
       >
         <MessagePrimitive.Content />
@@ -150,29 +204,32 @@ function UserMessage() {
   );
 }
 
+/** Assistant's message — full-width with markdown rendering */
 function AssistantMessage() {
   return (
-    <MessagePrimitive.Root className="flex justify-start px-4 py-2">
+    <MessagePrimitive.Root className="flex justify-start px-3 py-1.5">
       <div
-        className="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed prose prose-sm prose-stone dark:prose-invert prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 max-w-none"
+        className="rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed prose prose-sm max-w-none assistant-prose"
         style={{ background: "var(--surface-secondary)" }}
       >
         <MessagePrimitive.If hasContent={false}>
           <TypingIndicator />
         </MessagePrimitive.If>
         <MessagePrimitive.If hasContent>
-          <MessagePrimitive.Content />
+          {/* Pass our MarkdownText component so markdown gets rendered as HTML */}
+          <MessagePrimitive.Content components={{ Text: MarkdownText }} />
         </MessagePrimitive.If>
       </div>
     </MessagePrimitive.Root>
   );
 }
 
+/** Chat input area at the bottom of the screen */
 function Composer() {
   return (
     <div className="max-w-3xl mx-auto w-full">
       <ComposerPrimitive.Root
-        className="flex items-end gap-3 p-4"
+        className="flex items-end gap-2 px-3 py-2.5 sm:px-4 sm:py-3"
         style={{
           borderTop: "1px solid var(--border)",
           background: "var(--surface)",
@@ -180,7 +237,7 @@ function Composer() {
       >
         <ComposerPrimitive.Input
           placeholder="Ask about game rules..."
-          className="flex-1 resize-none rounded-xl px-4 py-2.5 text-sm outline-none"
+          className="flex-1 resize-none rounded-xl px-3.5 py-2 text-sm outline-none"
           style={{
             background: "var(--surface-secondary)",
             border: "1px solid var(--border)",
@@ -189,7 +246,7 @@ function Composer() {
           autoFocus
         />
         <ComposerPrimitive.Send
-          className="rounded-xl w-10 h-10 flex items-center justify-center text-white transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
+          className="rounded-xl w-9 h-9 flex items-center justify-center text-white transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
           style={{ background: "var(--accent)" }}
         >
           <svg

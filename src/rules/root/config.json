@@ -1,0 +1,12 @@
+{
+  "name": "Root",
+  "fullName": "Root: A Game of Woodland Might and Right",
+  "description": "Woodland might and right",
+  "emoji": "🌳",
+  "suggestions": [
+    { "text": "How does battle work?", "icon": "⚔️" },
+    { "text": "Compare the factions", "icon": "🎭" },
+    { "text": "Walk me through setup", "icon": "📋" },
+    { "text": "How does the Vagabond score points?", "icon": "🎯" }
+  ]
+}

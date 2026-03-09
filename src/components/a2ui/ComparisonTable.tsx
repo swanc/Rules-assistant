@@ -17,28 +17,29 @@ export function ComparisonTable({
 }: ComparisonTableProps) {
   return (
     <div
-      className="my-3 rounded-xl overflow-hidden shadow-sm"
+      className="my-2 rounded-xl overflow-hidden shadow-sm"
       style={{ border: "1px solid var(--border)" }}
     >
       {title && (
         <div
-          className="px-4 py-2.5"
+          className="px-3 py-2"
           style={{
             background: "var(--surface-secondary)",
             borderBottom: "1px solid var(--border)",
           }}
         >
-          <h3 className="text-sm font-semibold">{title}</h3>
+          <h3 className="text-xs sm:text-sm font-semibold">{title}</h3>
         </div>
       )}
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+      {/* Horizontal scroll so wide tables don't overflow on narrow screens */}
+      <div className="overflow-x-auto -webkit-overflow-scrolling-touch">
+        <table className="w-full text-xs sm:text-sm">
           <thead>
             <tr style={{ borderBottom: "1px solid var(--border)" }}>
               {headers.map((header, i) => (
                 <th
                   key={i}
-                  className="px-4 py-2.5 text-left font-semibold"
+                  className="px-3 py-2 text-left font-semibold whitespace-nowrap"
                   style={{
                     background:
                       i === highlightColumn
@@ -65,7 +66,7 @@ export function ComparisonTable({
                 {row.map((cell, cellIdx) => (
                   <td
                     key={cellIdx}
-                    className={`px-4 py-2.5 ${cellIdx === 0 ? "font-medium" : ""}`}
+                    className={`px-3 py-2 ${cellIdx === 0 ? "font-medium" : ""}`}
                     style={{
                       background:
                         cellIdx === highlightColumn

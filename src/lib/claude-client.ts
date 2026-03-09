@@ -16,8 +16,11 @@ export async function* streamClaudeResponse(
   let currentToolCallId: string | null = null;
 
   const params: Anthropic.MessageCreateParamsStreaming = {
-    model: "claude-sonnet-4-20250514",
-    max_tokens: 4096,
+    model: "claude-sonnet-4-6", // Sonnet 4.6 — good balance of accuracy and cost
+    max_tokens: 16000, // Must be higher than budget_tokens below
+    // Extended thinking gives the model internal "scratch paper" to reason through
+    // complex rules interactions before writing its answer — improves explanation quality
+    thinking: { type: "enabled", budget_tokens: 10000 },
     system: systemPrompt,
     messages,
     stream: true,
@@ -39,6 +42,8 @@ export async function* streamClaudeResponse(
           toolName: event.content_block.name,
         };
       }
+      // "thinking" blocks are the model's internal reasoning — we skip them,
+      // they never get shown to the user but improve the quality of the final answer
     } else if (event.type === "content_block_delta") {
       if (event.delta.type === "text_delta") {
         yield { type: "text", text: event.delta.text };
@@ -52,6 +57,7 @@ export async function* streamClaudeResponse(
           args: event.delta.partial_json,
         };
       }
+      // "thinking_delta" events are also skipped — internal only
     } else if (event.type === "content_block_stop") {
       if (currentToolCallId) {
         yield { type: "tool_use_end", toolCallId: currentToolCallId };

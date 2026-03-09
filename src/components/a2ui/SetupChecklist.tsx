@@ -32,25 +32,25 @@ export function SetupChecklist({ title, items }: SetupChecklistProps) {
 
   return (
     <div
-      className="my-3 rounded-xl overflow-hidden shadow-sm"
+      className="my-2 rounded-xl overflow-hidden shadow-sm"
       style={{ border: "1px solid var(--border)" }}
     >
       <div
-        className="flex items-center justify-between px-4 py-2.5"
+        className="flex items-center justify-between px-3 py-2"
         style={{
           background: "var(--surface-secondary)",
           borderBottom: "1px solid var(--border)",
         }}
       >
-        <h3 className="text-sm font-semibold">{title}</h3>
+        <h3 className="text-xs sm:text-sm font-semibold">{title}</h3>
         <span className="text-xs font-medium" style={{ color: "var(--muted)" }}>
           {completedCount}/{totalCount}
         </span>
       </div>
-      <div className="px-4 py-3" style={{ background: "var(--surface)" }}>
-        <ul className="space-y-2.5">
+      <div className="px-3 py-2.5" style={{ background: "var(--surface)" }}>
+        <ul className="space-y-2">
           {items.map((item, i) => (
-            <li key={i} className="flex items-start gap-3">
+            <li key={i} className="flex items-start gap-2.5">
               <button
                 type="button"
                 onClick={() => toggleItem(i)}
@@ -82,7 +82,7 @@ export function SetupChecklist({ title, items }: SetupChecklistProps) {
                 )}
               </button>
               <span
-                className="text-sm leading-relaxed transition-colors"
+                className="text-xs sm:text-sm leading-relaxed transition-colors"
                 style={{
                   color: checkedState[i]
                     ? "var(--muted-light)"

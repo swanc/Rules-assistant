@@ -12,11 +12,11 @@ interface RuleCardProps {
 export function RuleCard({ title, section, body, game }: RuleCardProps) {
   return (
     <div
-      className="my-3 rounded-xl overflow-hidden shadow-sm"
+      className="my-2 rounded-xl overflow-hidden shadow-sm"
       style={{ border: "1px solid var(--border)" }}
     >
       <div
-        className="flex items-center gap-2 px-4 py-2.5"
+        className="flex items-center gap-2 px-3 py-2"
         style={{
           background: "var(--surface-secondary)",
           borderBottom: "1px solid var(--border)",
@@ -24,7 +24,7 @@ export function RuleCard({ title, section, body, game }: RuleCardProps) {
       >
         {game && (
           <span
-            className="text-xs font-medium px-2 py-0.5 rounded-full"
+            className="text-[10px] sm:text-xs font-medium px-1.5 py-0.5 rounded-full"
             style={{
               background: "var(--accent-bg)",
               color: "var(--accent)",
@@ -34,14 +34,14 @@ export function RuleCard({ title, section, body, game }: RuleCardProps) {
           </span>
         )}
         {section && (
-          <span className="text-xs" style={{ color: "var(--muted)" }}>
+          <span className="text-[10px] sm:text-xs" style={{ color: "var(--muted)" }}>
             {section}
           </span>
         )}
-        <h3 className="text-sm font-semibold ml-auto">{title}</h3>
+        <h3 className="text-xs sm:text-sm font-semibold ml-auto">{title}</h3>
       </div>
       <div
-        className="px-4 py-3 text-sm whitespace-pre-wrap leading-relaxed"
+        className="px-3 py-2.5 text-xs sm:text-sm whitespace-pre-wrap leading-relaxed"
         style={{ background: "var(--surface)" }}
       >
         {body}

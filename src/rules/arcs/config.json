@@ -1,0 +1,12 @@
+{
+  "name": "Arcs",
+  "fullName": "Arcs",
+  "description": "Collapse and conflict in the Reach",
+  "emoji": "🪐",
+  "suggestions": [
+    { "text": "How do I lead and follow?", "icon": "🃏" },
+    { "text": "How do ambitions work?", "icon": "🏆" },
+    { "text": "Walk me through setup", "icon": "📋" },
+    { "text": "How does battle and raiding work?", "icon": "⚔️" }
+  ]
+}

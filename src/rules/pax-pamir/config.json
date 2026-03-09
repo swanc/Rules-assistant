@@ -1,0 +1,12 @@
+{
+  "name": "Pax Pamir 2E",
+  "fullName": "Pax Pamir 2nd Edition",
+  "description": "The Great Game in Afghanistan",
+  "emoji": "🏔️",
+  "suggestions": [
+    { "text": "How do bribes work?", "icon": "💰" },
+    { "text": "Explain dominance checks", "icon": "👑" },
+    { "text": "Walk me through setup", "icon": "📋" },
+    { "text": "How does loyalty and switching sides work?", "icon": "🤝" }
+  ]
+}

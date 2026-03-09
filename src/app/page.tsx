@@ -8,21 +8,25 @@ import { Thread } from "@/components/assistant-ui/thread";
 import { RenderA2UITool } from "@/tools/RenderA2UITool";
 import { GameSelector } from "@/components/game/GameSelector";
 
-const GAME_NAMES: Record<string, string> = {
-  root: "Root",
-  arcs: "Arcs",
-  "pax-pamir": "Pax Pamir 2E",
-};
-
-function ChatWithRuntime({ gameId }: { gameId: string }) {
-  const agent = useMemo(() => createAgent(gameId), [gameId]);
+function ChatWithRuntime({
+  gameId,
+  clearKey,
+  onNewTopic,
+}: {
+  gameId: string;
+  clearKey: number;
+  onNewTopic: () => void;
+}) {
+  // Re-creating the agent whenever gameId OR clearKey changes gives us a fresh
+  // empty conversation — same effect as switching games
+  const agent = useMemo(() => createAgent(gameId), [gameId, clearKey]);
   const runtime = useAgUiRuntime({ agent });
 
   return (
     <AssistantRuntimeProvider runtime={runtime}>
       <RenderA2UITool />
       <div className="flex-1 min-h-0">
-        <Thread />
+        <Thread gameId={gameId} onNewTopic={onNewTopic} />
       </div>
     </AssistantRuntimeProvider>
   );
@@ -30,25 +34,28 @@ function ChatWithRuntime({ gameId }: { gameId: string }) {
 
 export default function Home() {
   const [gameId, setGameId] = useState("root");
+  // Incrementing this number forces a fresh conversation (same as switching games)
+  const [clearKey, setClearKey] = useState(0);
 
   return (
     <div
       className="flex flex-col h-screen"
       style={{ background: "var(--background)", color: "var(--foreground)" }}
     >
+      {/* Compact header — game selector is built right in to save vertical space on mobile */}
       <header
-        className="px-6 py-4 flex items-center gap-4"
+        className="px-3 py-2.5 sm:px-5 sm:py-3 flex items-center gap-3"
         style={{
           background: "var(--surface)",
           borderBottom: "1px solid var(--border)",
         }}
       >
         <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
           style={{ background: "var(--accent)" }}
         >
           <svg
-            className="w-5 h-5 text-white"
+            className="w-[18px] h-[18px] text-white"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -61,21 +68,18 @@ export default function Home() {
             />
           </svg>
         </div>
-        <div className="flex-1 min-w-0">
-          <h1 className="text-base font-semibold tracking-tight">
-            Board Game Rules Assistant
-          </h1>
-          <p className="text-xs" style={{ color: "var(--muted)" }}>
-            Ask me anything about{" "}
-            <span className="font-medium" style={{ color: "var(--accent)" }}>
-              {GAME_NAMES[gameId] || gameId}
-            </span>{" "}
-            rules
-          </p>
-        </div>
+        {/* App title — shorter on mobile to leave room for the game selector */}
+        <h1 className="text-sm font-semibold tracking-tight leading-tight flex-1 min-w-0">
+          Rules Assistant
+        </h1>
+        {/* Game selector sits in the header as a compact pill */}
+        <GameSelector selectedGame={gameId} onGameChange={setGameId} />
       </header>
-      <GameSelector selectedGame={gameId} onGameChange={setGameId} />
-      <ChatWithRuntime gameId={gameId} />
+      <ChatWithRuntime
+        gameId={gameId}
+        clearKey={clearKey}
+        onNewTopic={() => setClearKey((k) => k + 1)}
+      />
     </div>
   );
 }

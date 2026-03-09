@@ -1,4 +1,8 @@
 @import "tailwindcss";
+/* Adds the "prose" utility classes that style markdown HTML (headings, lists, etc.) */
+@plugin "@tailwindcss/typography";
+/* Default styles for the markdown text component from assistant-ui */
+@import "@assistant-ui/react-markdown/styles/dot.css";
 
 :root {
   --background: #faf9f7;
@@ -83,3 +87,40 @@ body {
 .typing-dot:nth-child(1) { animation: typing-dot 1.4s infinite 0s; }
 .typing-dot:nth-child(2) { animation: typing-dot 1.4s infinite 0.2s; }
 .typing-dot:nth-child(3) { animation: typing-dot 1.4s infinite 0.4s; }
+
+/*
+ * Prose overrides for assistant messages.
+ * Tailwind's "prose" class styles the rendered markdown (headings, lists, etc.)
+ * but we need tighter spacing for a chat bubble on mobile.
+ */
+.assistant-prose {
+  /* Inherit text color from the page theme instead of Tailwind's default gray */
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-links: var(--accent);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-bullets: var(--muted);
+  --tw-prose-counters: var(--muted);
+  --tw-prose-hr: var(--border);
+}
+
+/* Tighten spacing inside chat bubbles so markdown doesn't feel too airy */
+.assistant-prose :where(h1, h2, h3, h4):first-child { margin-top: 0; }
+.assistant-prose :where(p, ul, ol):last-child { margin-bottom: 0; }
+.assistant-prose :where(h2) { font-size: 1.1em; margin-top: 1em; margin-bottom: 0.4em; }
+.assistant-prose :where(h3) { font-size: 1em; margin-top: 0.8em; margin-bottom: 0.3em; }
+.assistant-prose :where(p) { margin-top: 0.4em; margin-bottom: 0.4em; }
+.assistant-prose :where(ul, ol) { margin-top: 0.3em; margin-bottom: 0.3em; padding-left: 1.2em; }
+.assistant-prose :where(li) { margin-top: 0.15em; margin-bottom: 0.15em; }
+.assistant-prose :where(code):not(:where(pre code)) {
+  font-size: 0.85em;
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  background: var(--surface-secondary);
+}
+.assistant-prose :where(pre) {
+  font-size: 0.8em;
+  border-radius: 8px;
+  overflow-x: auto;
+}

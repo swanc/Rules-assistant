@@ -30,8 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files — .env.example is allowed (it has no secrets, just documents what's needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -39,6 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# auto-generated game list (rebuilt by scripts/generate-games.mjs)
+src/lib/generated-games.ts
 
 # PWA generated files
 public/sw.js
