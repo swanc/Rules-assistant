@@ -8,7 +8,7 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig: NextConfig = {
-  // Turbopack removed — using default webpack bundler for stability
+  // Turbopack removed — using webpack bundler (the PWA plugin needs it)
 };
 
 export default withPWA(nextConfig);

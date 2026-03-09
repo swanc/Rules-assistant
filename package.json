@@ -7,7 +7,7 @@
     "predev": "node scripts/generate-games.mjs",
     "dev": "next dev --webpack",
     "prebuild": "node scripts/generate-games.mjs",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint"
   },
