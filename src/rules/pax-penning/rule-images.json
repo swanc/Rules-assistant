@@ -1,0 +1,9 @@
+[
+  { "section": "Map Legend and Board Overview", "image": "map-legend-p2.jpg", "page": 2 },
+  { "section": "Setup", "image": "setup-p3.jpg", "page": 3 },
+  { "section": "On Your Turn (Gathering, Feast, Connections)", "image": "on-your-turn-p4.jpg", "page": 4 },
+  { "section": "Royal Connections I (King, Rook)", "image": "royal-connections-1-p5.jpg", "page": 5 },
+  { "section": "Royal Connections II (Knight, Bishop, Pawn)", "image": "royal-connections-2-p6.jpg", "page": 6 },
+  { "section": "Holding the Thing", "image": "the-thing-p7.jpg", "page": 7 },
+  { "section": "End of Game and Victory Conditions", "image": "end-of-game-p8.jpg", "page": 8 }
+]

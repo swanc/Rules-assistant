@@ -1,0 +1,12 @@
+{
+  "name": "Pax Penning",
+  "fullName": "Pax Penning",
+  "description": "Viking Age nation building in Sweden",
+  "emoji": "⚔️",
+  "suggestions": [
+    { "text": "How do Royal Connections work?", "icon": "♚" },
+    { "text": "What happens at the Thing?", "icon": "⚖️" },
+    { "text": "Walk me through setup", "icon": "📋" },
+    { "text": "How does the game end and who wins?", "icon": "🏆" }
+  ]
+}
