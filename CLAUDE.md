@@ -59,16 +59,33 @@ CSS custom properties defined in `globals.css` (warm wood tones: `--accent: #9f5
 
 When the user says "add [game name]", follow this process:
 
-1. **Find the rulebook PDF** — Search BGG or the publisher's site for a downloadable rulebook PDF
-2. **Download the PDF** — Save it temporarily (e.g., to `/tmp/`)
-3. **Extract text with PyMuPDF** — Use Python + PyMuPDF (`import fitz`) to extract all text from the PDF. This becomes the verbatim rules
-4. **Create the game folder** — `src/rules/{game-id}/` (use kebab-case for the folder name)
-5. **Create `config.json`** — Game metadata with name, fullName, description, emoji, and 4 suggestion prompts. See existing games in `src/rules/` for the format
-6. **Create `verbatim.md`** — The full word-for-word extracted text from the PDF
-7. **Create `rules.md`** — A condensed reference summary (600–900 lines). Organize by topic (setup, turn structure, actions, scoring, etc.). See existing games for the level of detail expected
-8. **Render rulebook page images** — Use PyMuPDF to render each page as a JPG and save to `public/rules/{game-id}/images/`. Name files descriptively: `{section}-p{page}.jpg`
-9. **Create `rule-images.json`** — Maps rule sections to their page images. Format: `[{ "section": "Setup", "image": "setup-p4.jpg", "page": 4 }, ...]`
-10. **Verify** — Run `npm run dev` and confirm the game appears in the selector dropdown
+### Finding the rulebook PDF
+
+Try these sources in order:
+1. **Publisher's website** — often has a direct PDF download (may need `User-Agent` header)
+2. **Screentop.gg** — digital tabletop site, often links to Google Drive rulebook PDFs
+3. **BGG file pages** — requires auth. Credentials are in `.env.local` as `BGG_USERNAME` and `BGG_PASSWORD`. If those aren't set, ask the user to download the file manually
+4. **officialgamerules.org** or **rulespal.com** — text-based rules (useful as fallback)
+
+Save the PDF to the system temp directory (use Python `tempfile.gettempdir()`).
+
+### Extracting rules text
+
+Use Python + PyMuPDF (`import fitz`) to extract text. **Important:** Some rulebook PDFs are image-only (zero extractable text). If this happens, find the rules text from an online source instead, using this priority:
+1. **rulespal.com** — often has comprehensive rules text
+2. **officialgamerules.org** — another good text source
+3. **Publisher's website** — may have rules on a webpage
+4. **Ask the user** — as a last resort
+
+### Creating the game files
+
+1. **Create the game folder** — `src/rules/{game-id}/` (use kebab-case for the folder name)
+2. **Create `config.json`** — Game metadata with name, fullName, description, emoji, and 4 suggestion prompts. See existing games in `src/rules/` for the format
+3. **Create `verbatim.md`** — The full word-for-word rules text (from PDF extraction or online source)
+4. **Create `rules.md`** — A condensed reference summary (600–900 lines). Organize by topic (setup, turn structure, actions, scoring, etc.). See existing games for the level of detail expected
+5. **Render rulebook page images** — Use PyMuPDF to render each page as a JPG and save to `public/rules/{game-id}/images/`. Name files descriptively: `{section}-p{page}.jpg`
+6. **Create `rule-images.json`** — Maps rule sections to their page images. Format: `[{ "section": "Setup", "image": "setup-p4.jpg", "page": 4 }, ...]`
+7. **Verify** — Run `npm run dev` and confirm the game appears in the selector dropdown
 
 **No code changes needed** — the app auto-discovers new games at build time via `scripts/generate-games.mjs`.
 
