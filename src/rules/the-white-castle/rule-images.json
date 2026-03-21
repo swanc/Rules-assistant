@@ -1,0 +1,19 @@
+[
+  { "section": "Setup (Castle, Bridges, Gardens)", "image": "setup-p2.jpg", "page": 2 },
+  { "section": "Setup (Training Yards, Player Setup)", "image": "setup-p3.jpg", "page": 3 },
+  { "section": "Playing the Game (Overview, Turn Structure)", "image": "playing-the-game-p4.jpg", "page": 4 },
+  { "section": "Dice Placement, Coins, and Resources", "image": "dice-and-coins-p5.jpg", "page": 5 },
+  { "section": "The Castle (Stewards and Diplomats Floors)", "image": "the-castle-p6.jpg", "page": 6 },
+  { "section": "Outside the Walls, The Well", "image": "outside-walls-and-well-p7.jpg", "page": 7 },
+  { "section": "The Personal Domains", "image": "personal-domains-p8.jpg", "page": 8 },
+  { "section": "Warriors and Training Yards", "image": "warriors-p9.jpg", "page": 9 },
+  { "section": "Gardeners and Courtiers", "image": "gardeners-and-courtiers-p10.jpg", "page": 10 },
+  { "section": "Courtiers (Social Climbing, Daimyo Floor)", "image": "courtiers-continued-p11.jpg", "page": 11 },
+  { "section": "Daimyo Seals, Lantern Rewards, Passage of Time", "image": "daimyo-seals-lanterns-passage-p12.jpg", "page": 12 },
+  { "section": "End of the Round", "image": "end-of-round-p13.jpg", "page": 13 },
+  { "section": "End of Game Scoring", "image": "end-of-game-scoring-p14.jpg", "page": 14 },
+  { "section": "Scoring Example", "image": "scoring-example-p15.jpg", "page": 15 },
+  { "section": "Solitaire Mode Setup", "image": "solitaire-mode-p16.jpg", "page": 16 },
+  { "section": "Solitaire Mode Gameplay", "image": "solitaire-continued-p17.jpg", "page": 17 },
+  { "section": "Solitaire Mode Scoring", "image": "solitaire-scoring-p18.jpg", "page": 18 }
+]

@@ -1,0 +1,12 @@
+{
+  "name": "The White Castle",
+  "fullName": "The White Castle",
+  "description": "Gain influence at Himeji Castle",
+  "emoji": "🏯",
+  "suggestions": [
+    { "text": "How do dice and coins work?", "icon": "🎲" },
+    { "text": "How do I send Courtiers up?", "icon": "👘" },
+    { "text": "Walk me through setup", "icon": "📋" },
+    { "text": "How does end-of-game scoring work?", "icon": "🏆" }
+  ]
+}
