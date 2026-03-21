@@ -1,0 +1,12 @@
+{
+  "name": "Innovation",
+  "fullName": "Innovation (4th Edition)",
+  "description": "Build a civilization through technology",
+  "emoji": "💡",
+  "suggestions": [
+    { "text": "How does the Dogma action work?", "icon": "⚡" },
+    { "text": "Explain splaying and icons", "icon": "🃏" },
+    { "text": "Walk me through setup", "icon": "📋" },
+    { "text": "How do achievements and winning work?", "icon": "🏆" }
+  ]
+}

@@ -1,0 +1,17 @@
+[
+  { "section": "Setup", "image": "setup-p3.jpg", "page": 3 },
+  { "section": "Your Civilization (Board, Score, Achievements)", "image": "your-civilization-p4.jpg", "page": 4 },
+  { "section": "Card Layout", "image": "card-layout-p5.jpg", "page": 5 },
+  { "section": "Turn Structure and Draw Action", "image": "turn-structure-draw-p6.jpg", "page": 6 },
+  { "section": "Meld Action and Dogma Action (Choose a Card)", "image": "meld-and-dogma-p7.jpg", "page": 7 },
+  { "section": "Dogma: Sharing and Demands", "image": "dogma-sharing-demands-p8.jpg", "page": 8 },
+  { "section": "Dogma: Execute Effects", "image": "dogma-execute-effects-p9.jpg", "page": 9 },
+  { "section": "Dogma: Golden Rule, If Clauses, Free Draw", "image": "dogma-rules-free-draw-p10.jpg", "page": 10 },
+  { "section": "Dogma Effect Keywords (A-E)", "image": "keywords-1-p11.jpg", "page": 11 },
+  { "section": "Dogma Effect Keywords (I-V)", "image": "keywords-2-p12.jpg", "page": 12 },
+  { "section": "Splaying", "image": "splaying-p13.jpg", "page": 13 },
+  { "section": "Achieve Action", "image": "achieve-action-p14.jpg", "page": 14 },
+  { "section": "Special Achievements and Victory", "image": "special-achievements-victory-p15.jpg", "page": 15 },
+  { "section": "Victory (cont'd) and Team Rules", "image": "victory-teams-p16.jpg", "page": 16 },
+  { "section": "Parley Rules and Hidden Information", "image": "parley-hidden-info-p17.jpg", "page": 17 }
+]
