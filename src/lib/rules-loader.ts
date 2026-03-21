@@ -19,6 +19,22 @@ const rulesCache: Record<string, string> = {};
 /** Separate cache for verbatim rulebook text (loaded on demand) */
 const verbatimCache: Record<string, string | null> = {};
 
+/** Cache for rule-image mappings (loaded alongside verbatim text) */
+const ruleImagesCache: Record<string, RuleImage[] | null> = {};
+
+/**
+ * Describes one cropped screenshot from a rulebook.
+ * Used to show users the actual rulebook page when they ask for exact wording.
+ */
+export interface RuleImage {
+  /** The rule section this image covers (e.g. "Setup", "Battle") */
+  section: string;
+  /** Full URL path to the image, served from public/ (e.g. "/rules/arcs/images/setup.png") */
+  imagePath: string;
+  /** Optional page number in the physical rulebook */
+  page?: number;
+}
+
 export async function loadRules(gameId: string): Promise<string> {
   // Return cached version if we've already read this file
   if (rulesCache[gameId]) {
@@ -78,6 +94,50 @@ export async function loadVerbatimRules(
   } catch {
     // File doesn't exist — cache null so we don't try again
     verbatimCache[gameId] = null;
+    return null;
+  }
+}
+
+/**
+ * Load the mapping of rule sections to rulebook screenshot images.
+ * Returns null if no rule-images.json exists for this game.
+ * Only loaded when the user asks for exact wording (same trigger as verbatim).
+ *
+ * The raw JSON has just filenames (e.g. "setup.png"). This function
+ * converts them to full URL paths (e.g. "/rules/arcs/images/setup.png")
+ * so the frontend can display them directly.
+ */
+export async function loadRuleImages(
+  gameId: string,
+): Promise<RuleImage[] | null> {
+  // Return cached version (including cached nulls for missing files)
+  if (gameId in ruleImagesCache) {
+    return ruleImagesCache[gameId];
+  }
+
+  try {
+    const raw = await readFile(
+      path.join(RULES_DIR, gameId, "rule-images.json"),
+      "utf-8",
+    );
+    const entries = JSON.parse(raw) as Array<{
+      section: string;
+      image: string;
+      page?: number;
+    }>;
+
+    // Convert filenames to full URL paths that the browser can load
+    const images: RuleImage[] = entries.map((entry) => ({
+      section: entry.section,
+      imagePath: `/rules/${gameId}/images/${entry.image}`,
+      page: entry.page,
+    }));
+
+    ruleImagesCache[gameId] = images;
+    return images;
+  } catch {
+    // File doesn't exist — cache null so we don't try again
+    ruleImagesCache[gameId] = null;
     return null;
   }
 }

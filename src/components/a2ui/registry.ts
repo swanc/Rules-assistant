@@ -5,6 +5,7 @@ import { ComparisonTable } from "./ComparisonTable";
 import { StepByStep } from "./StepByStep";
 import { QuickReference } from "./QuickReference";
 import { SetupChecklist } from "./SetupChecklist";
+import { RulebookScreenshot } from "./RulebookScreenshot";
 
 export const customCatalog: Catalog = {
   ...standardCatalog,
@@ -15,5 +16,6 @@ export const customCatalog: Catalog = {
     StepByStep,
     QuickReference,
     SetupChecklist,
+    RulebookScreenshot,
   },
 };

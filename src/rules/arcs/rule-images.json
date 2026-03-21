@@ -1,0 +1,21 @@
+[
+  { "section": "Setup (Table)", "image": "setup-p4.jpg", "page": 4 },
+  { "section": "Setup (Players)", "image": "setup-p5.jpg", "page": 5 },
+  { "section": "Core Concepts (Arc of Play, The Map)", "image": "core-concepts-p6.jpg", "page": 6 },
+  { "section": "Core Concepts (Resources, Cities, Trophies)", "image": "core-concepts-p7.jpg", "page": 7 },
+  { "section": "Playing a Chapter (Initiative, Lead Card)", "image": "playing-a-chapter-p8.jpg", "page": 8 },
+  { "section": "Playing a Chapter (Ambitions)", "image": "playing-a-chapter-p9.jpg", "page": 9 },
+  { "section": "Playing a Chapter (Other Players' Turns)", "image": "playing-a-chapter-p10.jpg", "page": 10 },
+  { "section": "Playing a Chapter (Check Initiative, Discard)", "image": "playing-a-chapter-p11.jpg", "page": 11 },
+  { "section": "Standard Actions (Tax, Build)", "image": "standard-actions-p12.jpg", "page": 12 },
+  { "section": "Standard Actions (Move, Repair, Influence, Secure)", "image": "standard-actions-p13.jpg", "page": 13 },
+  { "section": "Battle (Steps 1-4, Dice)", "image": "battle-p14.jpg", "page": 14 },
+  { "section": "Battle (Example, Raiding)", "image": "battle-p15.jpg", "page": 15 },
+  { "section": "Battle (Destroying Cities, Outrage)", "image": "battle-p16.jpg", "page": 16 },
+  { "section": "Resources (Prelude Spending)", "image": "resources-p17.jpg", "page": 17 },
+  { "section": "Ending a Chapter (Scoring Ambitions)", "image": "ending-a-chapter-p18.jpg", "page": 18 },
+  { "section": "Ending a Chapter (Cleanup, Advance Chapter)", "image": "ending-a-chapter-p19.jpg", "page": 19 },
+  { "section": "Leaders & Lore (Setup, Prelude)", "image": "leaders-and-lore-p20.jpg", "page": 20 },
+  { "section": "Leaders & Lore (Example)", "image": "leaders-and-lore-p21.jpg", "page": 21 },
+  { "section": "Fine Print (Rules Hierarchy, Tiebreakers)", "image": "fine-print-p22.jpg", "page": 22 }
+]

@@ -1,9 +1,11 @@
 import type Anthropic from "@anthropic-ai/sdk";
+import type { RuleImage } from "./rules-loader";
 
 export function buildSystemPrompt(
   rules: string,
   gameName: string,
   verbatimRules?: string | null,
+  ruleImages?: RuleImage[] | null,
 ): string {
   return `You are a board game rules assistant specializing in "${gameName}".
 You have complete knowledge of the game rules provided below. Answer questions accurately, citing specific sections or rules when relevant.
@@ -77,6 +79,12 @@ Properties: title (string), items (array of {text, checked?})
 Example:
 {"id": "setup-1", "component": "SetupChecklist", "title": "4-Player Setup", "items": [{"text": "Place map board and ruin tokens"}, {"text": "Shuffle the shared deck"}, {"text": "Set up Marquise de Cat"}]}
 
+**RulebookScreenshot** — Show a cropped image from the actual rulebook page
+Properties: title (string), imagePath (string), caption (string, optional)
+Only use this when the user asks for exact/verbatim rule wording AND an available screenshot matches the relevant section. Always pair with a text explanation.
+Example:
+{"id": "rbshot-1", "component": "RulebookScreenshot", "title": "Setup (Table)", "imagePath": "/rules/arcs/images/setup-p4.jpg", "caption": "Arcs Rulebook, p. 4"}
+
 You can include multiple components in a single render_ui call. Always provide a text response alongside or before the render_ui call to give context.
 
 ## Game Rules
@@ -92,7 +100,35 @@ ${verbatimRules}`
 
 ## Note on Exact Wording
 If the user asks for the exact or verbatim wording of a rule, you can provide it — just ask them to phrase their request with "exact wording" or "verbatim" and the system will load the original rulebook text for you to quote from.`
-  }`;
+  }${buildRuleImagesSection(ruleImages, gameName)}`;
+}
+
+/**
+ * Build the "Available Rulebook Screenshots" section for the system prompt.
+ * Only included when the user triggers the verbatim flow AND the game has
+ * screenshot images. Lists the exact imagePaths so Claude never guesses a URL.
+ */
+function buildRuleImagesSection(
+  ruleImages: RuleImage[] | null | undefined,
+  gameName: string,
+): string {
+  if (!ruleImages || ruleImages.length === 0) {
+    return "";
+  }
+
+  const lines = ruleImages.map((img) => {
+    const caption = img.page
+      ? `${gameName} Rulebook, p. ${img.page}`
+      : `${gameName} Rulebook`;
+    return `- "${img.section}" → imagePath: "${img.imagePath}", caption: "${caption}"`;
+  });
+
+  return `
+
+## Available Rulebook Screenshots
+The following rule sections have screenshots from the actual rulebook. When answering a verbatim/exact-wording question, include the matching RulebookScreenshot component alongside your text answer. Only use imagePaths listed here — do not invent paths.
+
+${lines.join("\n")}`;
 }
 
 export const RENDER_UI_TOOL: Anthropic.Tool = {
@@ -115,7 +151,7 @@ export const RENDER_UI_TOOL: Anthropic.Tool = {
             component: {
               type: "string",
               description:
-                "Component type: RuleCard, ComparisonTable, StepByStep, QuickReference, or SetupChecklist",
+                "Component type: RuleCard, ComparisonTable, StepByStep, QuickReference, SetupChecklist, or RulebookScreenshot",
             },
           },
           required: ["id", "component"],

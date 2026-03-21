@@ -9,9 +9,9 @@ npm run dev      # Start dev server at localhost:3000 (uses webpack)
 npm run build    # Production build
 npm start        # Run production server
 npm run lint     # ESLint
+npm test         # Run all tests once
+npm run test:watch  # Run tests in watch mode (for TDD)
 ```
-
-No test suite is configured.
 
 ## Architecture
 

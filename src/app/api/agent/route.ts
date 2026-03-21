@@ -2,95 +2,13 @@ import { EventType } from "@ag-ui/core";
 import { EventEncoder } from "@ag-ui/encoder";
 import { v4 as uuidv4 } from "uuid";
 import { streamClaudeResponse } from "@/lib/claude-client";
-import { loadRules, getGameName, loadVerbatimRules } from "@/lib/rules-loader";
+import { loadRules, getGameName, loadVerbatimRules, loadRuleImages } from "@/lib/rules-loader";
 import { buildSystemPrompt, RENDER_UI_TOOL } from "@/lib/prompts";
-import type Anthropic from "@anthropic-ai/sdk";
-
-interface AGUIMessage {
-  role: string;
-  content: string | Array<{ type: string; text?: string }>;
-}
-
-function convertToClaudeMessages(
-  messages: AGUIMessage[],
-): Anthropic.MessageParam[] {
-  return messages
-    .filter((m) => m.role === "user" || m.role === "assistant")
-    .map((m) => {
-      const text =
-        typeof m.content === "string"
-          ? m.content
-          : Array.isArray(m.content)
-            ? m.content
-                .filter((p) => p.type === "text")
-                .map((p) => p.text || "")
-                .join("")
-            : "";
-
-      return {
-        role: m.role as "user" | "assistant",
-        content: text,
-      };
-    });
-}
-
-function extractGameId(input: {
-  state?: Record<string, unknown>;
-  messages?: AGUIMessage[];
-}): string {
-  // Check AG-UI state for selected game
-  if (input.state && typeof input.state.gameId === "string") {
-    return input.state.gameId;
-  }
-
-  // Default to root
-  return "root";
-}
-
-/**
- * Phrases that indicate the user wants the exact original rulebook wording
- * rather than a paraphrased explanation. Checked against the latest user message.
- */
-const VERBATIM_PHRASES = [
-  "exact wording",
-  "exact rule",
-  "exact text",
-  "verbatim",
-  "word for word",
-  "quote the rule",
-  "quote the rulebook",
-  "what does the rulebook say",
-  "what does the rule book say",
-  "official wording",
-  "official text",
-  "original wording",
-  "original text",
-  "raw rule",
-  "actual wording",
-];
-
-/**
- * Check the latest user message for phrases that suggest they want
- * the verbatim rulebook text rather than a summarized explanation.
- */
-function wantsVerbatimRules(messages: AGUIMessage[]): boolean {
-  // Find the last user message
-  const lastUserMsg = [...messages].reverse().find((m) => m.role === "user");
-  if (!lastUserMsg) return false;
-
-  const text =
-    typeof lastUserMsg.content === "string"
-      ? lastUserMsg.content
-      : Array.isArray(lastUserMsg.content)
-        ? lastUserMsg.content
-            .filter((p) => p.type === "text")
-            .map((p) => p.text || "")
-            .join("")
-        : "";
-
-  const lower = text.toLowerCase();
-  return VERBATIM_PHRASES.some((phrase) => lower.includes(phrase));
-}
+import {
+  convertToClaudeMessages,
+  extractGameId,
+  wantsVerbatimRules,
+} from "@/lib/route-helpers";
 
 export async function POST(req: Request) {
   const input = await req.json();
@@ -113,13 +31,17 @@ export async function POST(req: Request) {
         const rules = await loadRules(gameId);
         const gameName = getGameName(gameId);
 
-        // Only load the full verbatim rulebook text when the user
-        // explicitly asks for exact wording — keeps normal requests cheap
-        const verbatimRules = wantsVerbatimRules(messages || [])
+        // Only load the full verbatim rulebook text and screenshot mappings
+        // when the user explicitly asks for exact wording — keeps normal requests cheap
+        const isVerbatimRequest = wantsVerbatimRules(messages || []);
+        const verbatimRules = isVerbatimRequest
           ? await loadVerbatimRules(gameId)
           : null;
+        const ruleImages = isVerbatimRequest
+          ? await loadRuleImages(gameId)
+          : null;
 
-        const systemPrompt = buildSystemPrompt(rules, gameName, verbatimRules);
+        const systemPrompt = buildSystemPrompt(rules, gameName, verbatimRules, ruleImages);
 
         const claudeMessages = convertToClaudeMessages(messages || []);
 
