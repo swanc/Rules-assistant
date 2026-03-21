@@ -31,15 +31,16 @@ export async function POST(req: Request) {
         const rules = await loadRules(gameId);
         const gameName = getGameName(gameId);
 
-        // Only load the full verbatim rulebook text and screenshot mappings
-        // when the user explicitly asks for exact wording — keeps normal requests cheap
+        // Only load the full verbatim rulebook text when the user explicitly
+        // asks for exact wording — keeps normal requests lightweight
         const isVerbatimRequest = wantsVerbatimRules(messages || []);
         const verbatimRules = isVerbatimRequest
           ? await loadVerbatimRules(gameId)
           : null;
-        const ruleImages = isVerbatimRequest
-          ? await loadRuleImages(gameId)
-          : null;
+
+        // Always load rule images so Claude can show rulebook screenshots
+        // whenever someone asks to see a page (it's just a small JSON mapping)
+        const ruleImages = await loadRuleImages(gameId);
 
         const systemPrompt = buildSystemPrompt(rules, gameName, verbatimRules, ruleImages);
 
