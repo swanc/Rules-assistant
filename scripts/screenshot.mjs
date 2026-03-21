@@ -31,8 +31,8 @@ console.log(`Capturing screenshot of ${url}...`);
 const browser = await chromium.launch();
 const page = await browser.newPage();
 
-// Set a realistic desktop viewport size
-await page.setViewportSize({ width: 1280, height: 800 });
+// iPhone 13 viewport (390x844) with 3x device pixel ratio for realistic mobile rendering
+await page.setViewportSize({ width: 390, height: 844 });
 
 // Navigate to the page and wait until network activity settles
 await page.goto(url, { waitUntil: 'networkidle' });

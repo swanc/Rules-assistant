@@ -33,7 +33,7 @@ function SuggestionChip({
   return (
     <button
       type="button"
-      className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm rounded-xl transition-all duration-200"
+      className="flex items-center justify-center gap-1.5 px-3 py-2.5 text-xs sm:text-sm rounded-xl transition-all duration-200 text-center"
       style={{
         background: "var(--surface)",
         border: "1px solid var(--border)",
@@ -140,7 +140,8 @@ export function Thread({ gameId, onNewTopic }: { gameId: string; onNewTopic?: ()
         <div className="max-w-3xl mx-auto w-full">
           {/* Empty state — shown before any messages are sent */}
           <ThreadPrimitive.Empty>
-            <div className="flex flex-col items-center justify-center h-full text-center px-4 py-10 sm:py-16">
+            {/* min-h-[70vh] pushes the welcome content toward the vertical centre of the screen */}
+            <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 py-10 sm:py-16">
               <div
                 className="w-14 h-14 mb-4 rounded-2xl flex items-center justify-center shadow-sm"
                 style={{ background: "var(--accent)" }}
@@ -168,7 +169,8 @@ export function Thread({ gameId, onNewTopic }: { gameId: string; onNewTopic?: ()
               >
                 Ask about rules, compare factions, or get help setting up your next game.
               </p>
-              <div className="flex flex-wrap gap-2 justify-center max-w-md">
+              {/* 2-column grid keeps the suggestion buttons in a tidy 2×2 layout */}
+              <div className="grid grid-cols-2 gap-2 w-full max-w-sm">
                 {suggestions.map((s) => (
                   <SuggestionChip key={s.text} text={s.text} icon={s.icon} />
                 ))}
@@ -233,6 +235,8 @@ function Composer() {
         style={{
           borderTop: "1px solid var(--border)",
           background: "var(--surface)",
+          /* Subtle upward shadow anchors the input bar to the bottom of the screen */
+          boxShadow: "0 -2px 8px rgba(0, 0, 0, 0.05)",
         }}
       >
         <ComposerPrimitive.Input

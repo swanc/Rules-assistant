@@ -11,7 +11,12 @@ npm start        # Run production server
 npm run lint     # ESLint
 npm test         # Run all tests once
 npm run test:watch  # Run tests in watch mode (for TDD)
+npm run screenshot   # Capture a mobile screenshot of localhost:3000 (iPhone 13 size)
 ```
+
+## Visual Review
+
+When making UI changes, always use `npm run screenshot` to capture how the app looks on mobile (requires `npm run dev` to be running). Read the saved image at `screenshots/current.png` to verify your changes look right before moving on. The user primarily uses this app on an iPhone 13, so mobile appearance is the priority.
 
 ## Architecture
 
@@ -49,6 +54,26 @@ CSS custom properties defined in `globals.css` (warm wood tones: `--accent: #9f5
 ### Import Alias
 
 `@/*` maps to `./src/*` (configured in `tsconfig.json`).
+
+## Adding a New Game
+
+When the user says "add [game name]", follow this process:
+
+1. **Find the rulebook PDF** — Search BGG or the publisher's site for a downloadable rulebook PDF
+2. **Download the PDF** — Save it temporarily (e.g., to `/tmp/`)
+3. **Extract text with PyMuPDF** — Use Python + PyMuPDF (`import fitz`) to extract all text from the PDF. This becomes the verbatim rules
+4. **Create the game folder** — `src/rules/{game-id}/` (use kebab-case for the folder name)
+5. **Create `config.json`** — Game metadata with name, fullName, description, emoji, and 4 suggestion prompts. See existing games in `src/rules/` for the format
+6. **Create `verbatim.md`** — The full word-for-word extracted text from the PDF
+7. **Create `rules.md`** — A condensed reference summary (600–900 lines). Organize by topic (setup, turn structure, actions, scoring, etc.). See existing games for the level of detail expected
+8. **Render rulebook page images** — Use PyMuPDF to render each page as a JPG and save to `public/rules/{game-id}/images/`. Name files descriptively: `{section}-p{page}.jpg`
+9. **Create `rule-images.json`** — Maps rule sections to their page images. Format: `[{ "section": "Setup", "image": "setup-p4.jpg", "page": 4 }, ...]`
+10. **Verify** — Run `npm run dev` and confirm the game appears in the selector dropdown
+
+**No code changes needed** — the app auto-discovers new games at build time via `scripts/generate-games.mjs`.
+
+**Optional files** (create if the game has lots of cards or reference material):
+- `cards.md` — Full card text reference (see `src/rules/arcs/cards.md` for format)
 
 ## Communication Style
 
