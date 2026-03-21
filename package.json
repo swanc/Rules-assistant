@@ -11,7 +11,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "screenshot": "node scripts/screenshot.mjs"
   },
   "dependencies": {
     "@a2ui-sdk/react": "^0.4.0",
@@ -41,6 +42,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "jest": "^30.3.0",
+    "playwright": "^1.58.2",
     "tailwindcss": "^4",
     "ts-jest": "^29.4.6",
     "typescript": "^5"

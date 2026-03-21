@@ -44,6 +44,9 @@ next-env.d.ts
 # auto-generated game list (rebuilt by scripts/generate-games.mjs)
 src/lib/generated-games.ts
 
+# screenshots (temporary working files for visual review — not source code)
+/screenshots
+
 # PWA generated files
 public/sw.js
 public/sw.js.map
