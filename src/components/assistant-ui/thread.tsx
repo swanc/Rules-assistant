@@ -136,7 +136,29 @@ export function Thread({ gameId, onNewTopic }: { gameId: string; onNewTopic?: ()
     <ThreadPrimitive.Root className="flex flex-col h-full">
       <NewTopicButton onNewTopic={onNewTopic} />
 
-      <ThreadPrimitive.Viewport className="flex-1 overflow-y-auto">
+      {/* Wrapper needed so we can position the fade overlay on top of the scroll area */}
+      <div className="relative flex-1 min-h-0">
+        {/*
+          Frosted-glass fade at the top of the message list.
+          - backdrop-filter blurs whatever scrolls behind this element
+          - background gradient fades from the page background to transparent
+          - mask-image makes BOTH the blur and the colour fade dissolve together,
+            so it's a smooth frosted effect rather than a hard edge
+          - pointer-events: none so it doesn't block taps/clicks on messages
+        */}
+        <div
+          className="absolute top-0 left-0 right-0 pointer-events-none"
+          style={{
+            height: "72px",
+            zIndex: 10,
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            background: "linear-gradient(to bottom, var(--background) 0%, transparent 100%)",
+            maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
+          }}
+        />
+        <ThreadPrimitive.Viewport className="h-full overflow-y-auto">
         <div className="max-w-3xl mx-auto w-full">
           {/* Empty state — shown before any messages are sent */}
           <ThreadPrimitive.Empty>
@@ -185,7 +207,8 @@ export function Thread({ gameId, onNewTopic }: { gameId: string; onNewTopic?: ()
             }}
           />
         </div>
-      </ThreadPrimitive.Viewport>
+        </ThreadPrimitive.Viewport>
+      </div>
 
       <Composer />
     </ThreadPrimitive.Root>
