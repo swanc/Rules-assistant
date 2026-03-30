@@ -90,36 +90,33 @@ export function GameSelector({
 
   return (
     <div ref={containerRef} className="relative flex-shrink-0" style={{ zIndex: 20 }}>
-      {/* Compact pill trigger — shows emoji + game name */}
+      {/* Discreet icon button — shows current game emoji as a subtle hint */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full transition-colors duration-150"
+        aria-label={`Switch game (currently ${selected.name})`}
+        className="w-9 h-9 flex items-center justify-center rounded-xl transition-colors duration-150"
         style={{
-          background: "var(--accent-bg)",
-          color: "var(--accent)",
-          border: "1px solid var(--border)",
+          background: isOpen ? "var(--accent-bg)" : "transparent",
+          border: "1px solid",
+          borderColor: isOpen ? "var(--accent)" : "var(--border)",
           cursor: "pointer",
         }}
       >
-        <span className="text-sm leading-none" role="img">
-          {selected.emoji}
-        </span>
-        <span className="max-w-[80px] sm:max-w-none truncate">{selected.name}</span>
-        {/* Small chevron */}
+        {/* Hamburger menu lines */}
         <svg
-          className="w-3 h-3 transition-transform duration-200 flex-shrink-0"
-          style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+          className="w-4 h-4"
+          style={{ color: "var(--muted)" }}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          strokeWidth={2.5}
+          strokeWidth={2}
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
 
-      {/* Dropdown panel — positioned below the pill, aligned to the right */}
+      {/* Dropdown panel — positioned below the button, aligned to the right */}
       {isOpen && (
         <div
           className="absolute right-0 mt-2 w-64 shadow-lg rounded-xl overflow-hidden"
@@ -130,6 +127,20 @@ export function GameSelector({
           }}
           onKeyDown={handleKeyDown}
         >
+          {/* Header showing which game is active */}
+          <div
+            className="px-3 py-2 flex items-center gap-2"
+            style={{ borderBottom: "1px solid var(--border)" }}
+          >
+            <span className="text-base leading-none" role="img">{selected.emoji}</span>
+            <div>
+              <div className="text-xs font-semibold" style={{ color: "var(--foreground)" }}>
+                {selected.name}
+              </div>
+              <div className="text-[10px]" style={{ color: "var(--muted)" }}>Current game</div>
+            </div>
+          </div>
+
           {/* Search input — only show when there are enough games to search */}
           {GAMES.length > 4 && (
             <div className="px-3 py-2" style={{ borderBottom: "1px solid var(--border)" }}>
